@@ -8,6 +8,7 @@ RUN LATEST=$(curl -s https://api.github.com/repos/Extremelyd1/HKMP/releases | gr
     curl -sOL https://github.com/Extremelyd1/HKMP/releases/download/$LATEST/HKMPServer.exe
 WORKDIR /HKMP
 COPY run.sh /run.sh
+RUN chmod +x /run.sh
 
 ENTRYPOINT ["/run.sh"]
 EXPOSE 2222/udp

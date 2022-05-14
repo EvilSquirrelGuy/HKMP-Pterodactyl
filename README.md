@@ -1,6 +1,8 @@
 # HKMP Docker Server
 Standalone server provided by [Extremelyd1](https://github.com/Extremelyd1/HKMP).
 
+Dockerhub Repo: https://hub.docker.com/repository/docker/maximalmax90/hkmpserver
+
 You need forward directory inside the container, if you want to edit and store settings in json-files.
 
 ## Example
@@ -19,5 +21,3 @@ services:
       - "2222:2222/udp"
     restart: always
 ```
-
-Dockerhub Repo: https://hub.docker.com/repository/docker/maximalmax90/hkmpserver

@@ -1,13 +1,25 @@
 #!/bin/bash
 echo "Checking existing server file..."
 if [ ! -f "/HKMP/HKMPServer.exe" ]; then
-        echo "Not found, copy..."
-        cp /HKMPServer.exe /HKMP/HKMPServer.exe;
+        echo "EXE-file not found, copy..."
+        cp /FILES/HKMPServer.exe /HKMP/HKMPServer.exe;
 else
-        echo "Found! Checking checksum..."
-        if [ `md5sum /HKMPServer.exe | awk '{print $1}'` != `md5sum /HKMP/HKMPServer.exe | awk '{print $1}'` ]; then
+        echo "EXE-file found! Compare checksum..."
+        if [ `md5sum /FILES/HKMPServer.exe | awk '{print $1}'` != `md5sum /HKMP/HKMPServer.exe | awk '{print $1}'` ]; then
                 echo "Checksum mismatch, updating file..."
-                cp /HKMPServer.exe /HKMP/HKMPServer.exe;
+                cp /FILES/HKMPServer.exe /HKMP/HKMPServer.exe;
+        else
+                echo "Matched!"
+        fi
+fi
+if [ ! -f "/HKMP/HKMPServer.pdb" ]; then
+        echo "PDB-file not found, copy..."
+        cp /FILES/HKMPServer.pdb /HKMP/HKMPServer.pdb;
+else
+        echo "PDB-file found! Compare checksum..."
+        if [ `md5sum /FILES/HKMPServer.pdb | awk '{print $1}'` != `md5sum /HKMP/HKMPServer.pdb | awk '{print $1}'` ]; then
+                echo "Checksum mismatch, updating file..."
+                cp /FILES/HKMPServer.pdb /HKMP/HKMPServer.pdb;
         else
                 echo "Matched!"
         fi

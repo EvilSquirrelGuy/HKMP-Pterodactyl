@@ -1,0 +1,51 @@
+#!/bin/bash
+SESSION="server"
+LOG="logs/server.log"
+EXE="HKMPServer.exe"
+PDB="HKMPServer.pdb"
+DIR="/HKMP"
+TMPDIR="/FILES"
+
+execute() {
+        STR="${@}"^M
+        screen -S server -X stuff "$STR"
+        sleep 1;
+        tail -n1 ${LOG}
+}
+
+help() {
+        echo "Usage:"
+        echo "All commands sends to server by default. Check the official wiki for a complete list of commands."
+        echo "Additional commands:"
+        echo "exit - stop a server"
+        echo "check - check for update"
+        echo "update - update a server. Attention, the container must have a restart policy of \"always\", otherwise you will need to start the container manually!"
+}
+
+check() {
+        REMOTE=$(curl -s https://api.github.com/repos/Extremelyd1/HKMP/releases | egrep 'html_url.*tag' | awk -F\" '{print $4}' | cut -d\/ -f8 | head -n1);
+        if [ -f ${DIR}/version ]; then
+                LOCAL=$(cat ${DIR}/version);
+                [ "$LOCAL" == "$REMOTE" ] && echo "No update required" || echo -e "Local build: $LOCAL\nRemote build: $REMOTE\nUpdate available.";
+        else
+                echo "Local version file not found, try checking checksums...";
+                curl -o ${TMPDIR}/HKMPServer.zip -sOL https://github.com/Extremelyd1/HKMP/releases/download/$REMOTE/HKMPServer.zip;
+                unzip -o ${TMPDIR}/HKMPServer.zip -d ${TMPDIR} && rm ${TMPDIR}/HKMPServer.zip;
+                EXE_LOCAL=$(md5sum ${DIR}/${EXE} | cut -d" " -f1);
+                EXE_REMOTE=$(md5sum ${TMPDIR}/${EXE} | cut -d" " -f1);
+                PDB_LOCAL=$(md5sum ${DIR}/${PDB} | cut -d" " -f1);
+                PDB_REMOTE=$(md5sum ${TMPDIR}/${PDB} | cut -d" " -f1);
+                [[ "$EXE_REMOTE" == "$EXE_LOCAL" && "$PDB_REMOTE" == "$PDB_LOCAL" ]] && echo "File checksums match. You have version: $REMOTE" && echo $REMOTE > ${DIR}/version || echo "Checksum of files mismatch. You have an outdated version. Update available.";
+        fi
+}
+update() {
+        touch ${DIR}/update;
+        execute "cmd" "exit";
+}
+
+case "$1" in
+        "check"  ) check;;
+        "update" ) update;;
+        "help"   ) help;;
+        *        ) execute ${@};;
+esac

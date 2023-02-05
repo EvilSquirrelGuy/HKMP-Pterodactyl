@@ -40,7 +40,7 @@ check() {
 }
 update() {
         touch ${DIR}/update;
-        execute "cmd" "exit";
+        execute "exit";
 }
 
 case "$1" in

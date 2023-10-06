@@ -1,4 +1,4 @@
-FROM alpine:3.16.2
+FROM alpine:3.18.4
 LABEL maintainer="Maxim Makeev <maximalmax90@mail.ru>"
 
 RUN apk add --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/ mono bash curl screen unzip

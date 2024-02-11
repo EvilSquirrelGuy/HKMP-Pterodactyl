@@ -1,7 +1,8 @@
-# HKMP Docker Server
+# HKMP Pterodactyl Docker Image
 Standalone server provided by [Extremelyd1](https://github.com/Extremelyd1/HKMP).
+Original docker container provided by [maximalmax90](https://github.com/maximalmax90/HKMPDocker)
 
-Dockerhub Repo: https://hub.docker.com/repository/docker/maximalmax90/hkmpserver
+~~Dockerhub Repo: https://hub.docker.com/repository/docker/maximalmax90/hkmpserver~~
 
 Note: the latest tag allows you to update server files without recreating the container. Or you can use pre-build container with specific version (example: ```maximalmax90/hkmpserver:v2.2.3```)
 
